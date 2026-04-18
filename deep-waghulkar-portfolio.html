@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Deep Waghulkar — Creative Writer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #080808;
+    --surface: #111111;
+    --card: #181818;
+    --border: rgba(255,255,255,0.07);
+    --accent: #E8C47A;
+    --accent-dim: rgba(232,196,122,0.12);
+    --white: #F5F0E8;
+    --muted: #7A7870;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-serif: 'Cormorant Garamond', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(8,8,8,0.92);
+    border-color: var(--border);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 4rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 30%, rgba(232,196,122,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(232,196,122,0.04) 0%, transparent 60%);
+  }
+  .hero-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 14vw, 13rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-name span { color: var(--accent); }
+  .hero-sub {
+    margin-top: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-desc {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--muted);
+    max-width: 380px;
+    line-height: 1.5;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 2rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+  .hero-cta:hover { background: var(--accent); color: var(--black); }
+  .scroll-line {
+    position: absolute;
+    right: 4rem; bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1s 1s forwards;
+  }
+  .scroll-line span {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+  }
+  .scroll-line::after {
+    content: '';
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    display: block;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 8rem 4rem; }
+  .section-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+    display: block;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--surface); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .about-headline {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.25;
+    font-weight: 400;
+  }
+  .about-headline em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .about-body {
+    font-size: 1rem;
+    color: rgba(245,240,232,0.65);
+    line-height: 1.85;
+  }
+  .about-body p + p { margin-top: 1.2rem; }
+  .stats-row {
+    display: flex;
+    gap: 3rem;
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+
+  /* ── WORK ── */
+  #work { background: var(--black); }
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .work-card {
+    background: var(--black);
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: background 0.3s;
+  }
+  .work-card:hover { background: var(--card); }
+  .work-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--accent);
+    transition: height 0.4s ease;
+  }
+  .work-card:hover::before { height: 100%; }
+  .work-num {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    color: rgba(232,196,122,0.12);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s;
+  }
+  .work-card:hover .work-num { color: rgba(232,196,122,0.25); }
+  .work-category {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  .work-brand {
+    font-family: var(--font-serif);
+    font-size: 1.9rem;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .work-desc {
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.55);
+    line-height: 1.7;
+  }
+  .work-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid rgba(232,196,122,0.2);
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── SERVICES ── */
+  #services { background: var(--surface); }
+  .services-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .services-intro {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    line-height: 1.4;
+    font-weight: 400;
+    color: rgba(245,240,232,0.8);
+    position: sticky;
+    top: 6rem;
+  }
+  .service-item {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    transition: padding-left 0.3s;
+    cursor: default;
+  }
+  .service-item:first-child { border-top: 1px solid var(--border); }
+  .service-item:hover { padding-left: 1rem; }
+  .service-name {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .service-detail {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .service-arrow {
+    text-align: right;
+    font-size: 1.2rem;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    transform: translateX(-8px);
+  }
+  .service-item:hover .service-arrow { opacity: 1; transform: translateX(0); }
+
+  /* ── CTA ── */
+  #contact {
+    background: var(--black);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    position: relative;
+    overflow: hidden;
+  }
+  #contact::before {
+    content: 'LET\'S WORK';
+    position: absolute;
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 20vw, 18rem);
+    color: rgba(232,196,122,0.03);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .contact-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .contact-sub {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--muted);
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+  }
+  .contact-links {
+    display: flex;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2.5rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .contact-btn.primary {
+    background: var(--accent);
+    color: var(--black);
+    font-weight: 500;
+  }
+  .contact-btn.primary:hover { background: #F0D08C; }
+  .contact-btn.secondary {
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .contact-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2rem 4rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer span {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .alias {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    color: rgba(232,196,122,0.4);
+    letter-spacing: 0.15em;
+  }
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(24px); }
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; }
+    from { opacity: 0; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    section { padding-top: 5rem; padding-bottom: 5rem; }
+    .about-grid, .services-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .work-grid { grid-template-columns: 1fr; }
+    .services-intro { position: static; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    .scroll-line { display: none; }
+    .hero-sub { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+    .service-item { grid-template-columns: 1fr; }
+    .contact-links { flex-direction: column; align-items: center; }
+    .stats-row { gap: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">DW</div>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <p class="hero-tag">Creative Writer &amp; Brand Voice Specialist</p>
+  <h1 class="hero-name">DEEP<br><span>WAGHULKAR</span></h1>
+  <div class="hero-sub">
+    <p class="hero-desc">Words that make people stop scrolling — and actually feel something.</p>
+    <a href="#contact" class="hero-cta">Start a Project ↗</a>
+  </div>
+  <div class="scroll-line"><span>Scroll</span></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label reveal">About</p>
+  <div class="about-grid">
+    <div class="reveal">
+      <h2 class="about-headline">
+        I don't just write.<br>
+        I build <em>voices</em><br>
+        brands live inside.
+      </h2>
+      <div class="stats-row">
+        <div>
+          <div class="stat-num">4+</div>
+          <div class="stat-label">Brands Voiced</div>
+        </div>
+        <div>
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Words Played</div>
+        </div>
+        <div>
+          <div class="stat-num">1</div>
+          <div class="stat-label">Original Style</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-body reveal">
+      <p>Based in Nagpur. Writing across brands, genres, and moods — from a burger joint's punchy captions to a music crew's raw lyricism. I'm equally comfortable in Hinglish wordplay and clean English copy that converts.</p>
+      <p>My edge? I think visually. Every caption, script, or tagline I write, I see how it looks on screen — because I also work in filmmaking and music video production. Copy that's cinematic hits different.</p>
+      <p>I don't write content. I write the thing that makes someone screenshot and send it to a friend.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <p class="section-label reveal">Selected Work</p>
+  <div class="work-grid reveal">
+
+    <div class="work-card">
+      <div class="work-num">01</div>
+      <p class="work-category">Music &amp; Culture</p>
+      <h3 class="work-brand">Shunya Tune</h3>
+      <p class="work-desc">Original lyrics, social copy, and creative direction for an independent music collective. Every word here is unfiltered — from concept to caption, this is where the voice lives raw.</p>
+      <div class="work-tags">
+        <span class="tag">Lyrics</span>
+        <span class="tag">Captions</span>
+        <span class="tag">Brand Identity</span>
+      </div>
+    </div>
+
+    <div class="work-card">
+      <div class="work-num">02</div>
+      <p class="work-category">Beauty &amp; Lifestyle</p>
+      <h3 class="work-brand">Nhash Studio</h3>
+      <p class="work-desc">Social media copy for a nails and lash extension studio. Soft, aesthetic, aspirational — the kind of writing that makes a girl tap Save before she even finishes reading.</p>
+      <div class="work-tags">
+        <span class="tag">Instagram Copy</span>
+        <span class="tag">Brand Tone</span>
+        <span class="tag">Storytelling</span>
+      </div>
+    </div>
+
+    <div class="work-card">
+      <div class="work-num">03</div>
+      <p class="work-category">Food &amp; F&amp;B</p>
+      <h3 class="work-brand">Burghar</h3>
+      <p class="work-desc">Named the brand. Then wrote for it. Punchy, irreverent food copy with attitude — the kind that makes hunger hit harder. From captions to campaign taglines.</p>
+      <div class="work-tags">
+        <span class="tag">Naming</span>
+        <span class="tag">Food Copy</span>
+        <span class="tag">Taglines</span>
+      </div>
+    </div>
+
+    <div class="work-card">
+      <div class="work-num">04</div>
+      <p class="work-category">Media &amp; Production</p>
+      <h3 class="work-brand">No Budget Media</h3>
+      <p class="work-desc">Content writing for a videography and social media production house. Scripts, hooks, and copy that complement visual storytelling — written by someone who understands both sides of the lens.</p>
+      <div class="work-tags">
+        <span class="tag">Scripts</span>
+        <span class="tag">Reel Hooks</span>
+        <span class="tag">Social Copy</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <p class="section-label reveal">What I Do</p>
+  <div class="services-layout">
+    <div class="services-intro reveal">
+      The right words in the right voice — for the right audience.
+    </div>
+    <div class="reveal">
+
+      <div class="service-item">
+        <div>
+          <div class="service-name">Social Media Copy</div>
+          <div class="service-detail">Instagram captions, reel hooks, bio rewrites — copy that stops the scroll and earns the follow.</div>
+        </div>
+        <div class="service-arrow">→</div>
+      </div>
+
+      <div class="service-item">
+        <div>
+          <div class="service-name">Brand Naming &amp; Taglines</div>
+          <div class="service-detail">Naming products, outlets, or ventures. The kind of name that sticks and a tagline that sells without selling.</div>
+        </div>
+        <div class="service-arrow">→</div>
+      </div>
+
+      <div class="service-item">
+        <div>
+          <div class="service-name">Script &amp; Reel Writing</div>
+          <div class="service-detail">Video scripts, voiceover copy, and reel concepts written with cinematic instinct — not just words on a page.</div>
+        </div>
+        <div class="service-arrow">→</div>
+      </div>
+
+      <div class="service-item">
+        <div>
+          <div class="service-name">Brand Voice Building</div>
+          <div class="service-detail">Defining how a brand sounds across every touchpoint — tone guide, vocabulary, and personality framework.</div>
+        </div>
+        <div class="service-arrow">→</div>
+      </div>
+
+      <div class="service-item">
+        <div>
+          <div class="service-name">Hinglish &amp; Vernacular Copy</div>
+          <div class="service-detail">English, Hindi, or the beautiful chaos in between — copy that feels local, sharp, and completely native.</div>
+        </div>
+        <div class="service-arrow">→</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2 class="contact-headline reveal">GOT A BRAND?<br><span style="color:var(--accent)">LET'S TALK.</span></h2>
+  <p class="contact-sub reveal">I'm open to freelance projects, collabs, and good conversations.</p>
+  <div class="contact-links reveal">
+    <a href="mailto:okjaadu04@gmail.com" class="contact-btn primary">Email Me ↗</a>
+    <a href="https://www.instagram.com/okjaadu.rar/" target="_blank" class="contact-btn secondary">Instagram</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Deep Waghulkar. All rights reserved.</span>
+  <span class="alias">OK JAADU</span>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
